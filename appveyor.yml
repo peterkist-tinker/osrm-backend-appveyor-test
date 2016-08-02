@@ -1,42 +1,110 @@
-environment:
-  matrix:
-  - configuration: Release
-#  - configuration: Debug
 
-# scripts that are called at very beginning, before repo cloning
-init:
-  - git config --global core.autocrlf input
+#-----------------------
+# General Configuration
+#-----------------------
 
-os: Visual Studio 2015
+version: 5.2.{build}
 
-# clone directory
-clone_folder: c:\projects\osrm
-
-platform: x64
-
-build_script:
-  - CALL appveyor-build.bat
-
-test: off
-
-artifacts:
-  - path: osrm_Release.zip
-    name: osrm_Release.zip
-#  - path: osrm_Debug.zip
-#    name: osrm_Debug.zip
-
+# for now, only build master branches
 branches:
+  # whitelist
   only:
     - master
 
-deploy:
-  provider: FTP
-  server:
-    secure: ef7oiQTTXFGt8NdNiOHm/uRFVrUttzyFbIlnaeHhQvw=
-  username:
-    secure: Bw+Se2GTJxA6+GtRkEc//tQSBHOuFIuJHBjFwR9cD+8=
-  password:
-    secure: eqwESZqxMXC/j5mOCpaXuw==
-  folder: /
-  enable_ssl: true
-  active_mode: false
+
+#---------------------------
+# Environment Configuration
+#---------------------------
+
+image: Visual Studio 2015
+
+init:
+  - git config --global core.autocrlf input
+
+# clone directory (on build host)
+clone_folder: c:\projects\osrm
+
+# fetch repo as zip archive
+shallow_clone: true
+
+matrix:
+  fast_finish: true
+
+install:
+  - '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall" x64_amd64'
+  - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64'
+  - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin\amd64;%PATH%
+
+
+#---------------------
+# Build Configuration
+#---------------------
+
+platform: x64
+
+configuration:
+  - Debug
+  - Release
+  
+build:
+  parallel: true
+  project: OSRM.sln
+  
+  verbosity: normal
+
+before_build:
+  - mkdir build
+  - cd build
+  
+after_build:
+  - cd ..
+
+build_script:
+  - cmake -G "Visual Studio 14 2015 Win64" \
+     -DCMAKE_BUILD_TYPE=%CONFIGURATION% 
+     -DCMAKE_INSTALL_PREFIX=%PREFIX%
+
+
+
+#environment:
+#  matrix:
+#  - configuration: Release
+#  - configuration: Debug
+
+# scripts that are called at very beginning, before repo cloning
+#init:
+#  - git config --global core.autocrlf input
+
+#os: Visual Studio 2015
+
+# clone directory
+#clone_folder: c:\projects\osrm
+
+#platform: x64
+
+#build_script:
+#  - CALL appveyor-build.bat
+
+#test: off
+
+#artifacts:
+#  - path: osrm_Release.zip
+#    name: osrm_Release.zip
+#  - path: osrm_Debug.zip
+#    name: osrm_Debug.zip
+
+#branches:
+#  only:
+#    - master
+
+#deploy:
+#  provider: FTP
+#  server:
+#    secure: ef7oiQTTXFGt8NdNiOHm/uRFVrUttzyFbIlnaeHhQvw=
+#  username:
+#    secure: Bw+Se2GTJxA6+GtRkEc//tQSBHOuFIuJHBjFwR9cD+8=
+#  password:
+#    secure: eqwESZqxMXC/j5mOCpaXuw==
+#  folder: /
+#  enable_ssl: true
+# active_mode: false
