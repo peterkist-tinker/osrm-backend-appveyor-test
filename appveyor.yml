@@ -18,6 +18,15 @@ branches:
 
 image: Visual Studio 2015
 
+environment:
+  OSRMDEPSDIR: %PROJECT_DIR%/osrm-deps
+  PREFIX: %OSRMDEPSDIR%/libs
+  BOOST_ROOT: %OSRMDEPSDIR%/boost
+  BOOST_LIBRARYDIR: %BOOST_ROOT%/lib
+  TBB_INSTALL_DIR: %OSRMDEPSDIR%/tbb
+  TBB_ARCH_PLATFORM: intel64/vc14
+  DEPSPKG: osrm-deps-win-x64-14.0.7z
+
 init:
   - git config --global core.autocrlf input
 
@@ -53,6 +62,12 @@ build:
   verbosity: normal
 
 before_build:
+  # setup dependencies
+  - mkdir osrm-deps
+  - cd osrm-deps
+  - ps: Invoke-WebRequest https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/$env:DEPSPKG -OutFile $env:PROJECT_DIR\$env:DEPSPKG
+  - 7z -y x %DEPSPKG% | %windir%\system32\FIND "ing archive"
+  - cd ..
   - mkdir build
   - cd build
   
@@ -60,11 +75,15 @@ after_build:
   - cd ..
 
 build_script:
-  - cmake -G "Visual Studio 14 2015 Win64" \
-     -DCMAKE_BUILD_TYPE=%CONFIGURATION% 
-     -DCMAKE_INSTALL_PREFIX=%PREFIX%
-
-
+  - cmake .. \
+     -G "Visual Studio 14 2015 Win64" \
+     -DBOOST_ROOT=%BOOST_ROOT% \
+     -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% \
+     -DBoost_ADDITIONAL_VERSIONS=1.58 \
+     -DBoost_USE_MULTITHREADED=ON \
+     -DBoost_USE_STATIC_LIBS=ON \
+     -DCMAKE_INSTALL_PREFIX=%PREFIX% \
+     -DCMAKE_BUILD_TYPE=%CONFIGURATION%
 
 #environment:
 #  matrix:
