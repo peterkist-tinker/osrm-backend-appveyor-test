@@ -19,12 +19,6 @@ branches:
 image: Visual Studio 2015
 
 environment:
-  OSRMDEPSDIR: %PROJECT_DIR%/osrm-deps
-  PREFIX: %OSRMDEPSDIR%/libs
-  BOOST_ROOT: %OSRMDEPSDIR%/boost
-  BOOST_LIBRARYDIR: %BOOST_ROOT%/lib
-  TBB_INSTALL_DIR: %OSRMDEPSDIR%/tbb
-  TBB_ARCH_PLATFORM: intel64/vc14
   DEPSPKG: osrm-deps-win-x64-14.0.7z
 
 init:
@@ -43,6 +37,12 @@ install:
   - '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall" amd64'
   - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64'
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin\amd64;%PATH%
+  - set OSRMDEPSDIR=%PROJECT_DIR%/osrm-deps
+  - set PREFIX=%OSRMDEPSDIR%/libs
+  - set BOOST_ROOT=%OSRMDEPSDIR%/boost
+  - set BOOST_LIBRARYDIR=%BOOST_ROOT%/lib
+  - set TBB_INSTALL_DIR=%OSRMDEPSDIR%/tbb
+  - set TBB_ARCH_PLATFORM=intel64/vc14
 
 
 #---------------------
