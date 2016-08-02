@@ -31,7 +31,7 @@ matrix:
   fast_finish: true
 
 install:
-  - '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall" x64_amd64'
+  - '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall" amd64'
   - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64'
   - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin\amd64;%PATH%
 
