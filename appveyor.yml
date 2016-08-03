@@ -63,7 +63,7 @@ build:
 
 before_build:
   # setup dependencies
-  - echo "Invoke-WebRequest https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/$env:DEPSPKG -OutFile $env:PROJECT_DIR\$env:DEPSPKG"
+  - echo "Invoke-WebRequest https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/%DEPSPKG% -OutFile %PROJECT_DIR%\%DEPSPKG%"
   - ps: Invoke-WebRequest https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/$env:DEPSPKG -OutFile $env:PROJECT_DIR\$env:DEPSPKG
   - echo %CD%
   - dir
