@@ -63,18 +63,16 @@ build:
 
 before_build:
   # setup dependencies
-  - mkdir osrm-deps
-  - cd osrm-deps
   - ps: Invoke-WebRequest https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/$env:DEPSPKG -OutFile $env:PROJECT_DIR\$env:DEPSPKG
   - 7z -y x %DEPSPKG% | %windir%\system32\FIND "ing archive"
-  - cd ..
-  - mkdir build
-  - cd build
+  # setup build directory for cmake
   
-after_build:
-  - cd ..
+#after_build:
+
 
 build_script:
+  - mkdir build
+  - cd build
   - cmake .. \
      -G "Visual Studio 14 2015 Win64" \
      -DBOOST_ROOT=%BOOST_ROOT% \
@@ -84,6 +82,7 @@ build_script:
      -DBoost_USE_STATIC_LIBS=ON \
      -DCMAKE_INSTALL_PREFIX=%PREFIX% \
      -DCMAKE_BUILD_TYPE=%CONFIGURATION%
+  - cd ..
 
 #environment:
 #  matrix:
