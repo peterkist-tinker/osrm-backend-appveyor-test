@@ -64,8 +64,6 @@ build:
 before_build:
   # setup dependencies
   - ps: Invoke-WebRequest https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/$env:DEPSPKG -OutFile $env:APPVEYOR_BUILD_FOLDER\$env:DEPSPKG
-  - echo %CD%
-  - dir
   - 7z -y x %DEPSPKG% | %windir%\system32\FIND "ing archive"
   # setup build directory for cmake
   
@@ -73,6 +71,8 @@ before_build:
 
 
 build_script:
+  - echo %CD%
+  - dir
   - mkdir build
   - cd build
   - cmake .. \
