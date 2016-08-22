@@ -71,19 +71,19 @@ before_build:
 
 
 build_script:
-  - echo %CD%
-  - dir
+  - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build
-  - dir
-  - cmake .. -G "Visual Studio 14 2015 Win64" \
-     -DBOOST_ROOT=%BOOST_ROOT% \
-     -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% \
-     -DBoost_ADDITIONAL_VERSIONS=1.58 \
-     -DBoost_USE_MULTITHREADED=ON \
-     -DBoost_USE_STATIC_LIBS=ON \
-     -DCMAKE_INSTALL_PREFIX=%PREFIX% \
-     -DCMAKE_BUILD_TYPE=%CONFIGURATION%
+  - echo %CD%
+  - cmake --help
+  - cmake .. -G "Visual Studio 14 2015 Win64" 
+#     -DBOOST_ROOT=%BOOST_ROOT% \
+#     -DBOOST_LIBRARYDIR=%BOOST_LIBRARYDIR% \
+#     -DBoost_ADDITIONAL_VERSIONS=1.58 \
+#     -DBoost_USE_MULTITHREADED=ON \
+#     -DBoost_USE_STATIC_LIBS=ON \
+#     -DCMAKE_INSTALL_PREFIX=%PREFIX% \
+#     -DCMAKE_BUILD_TYPE=%CONFIGURATION%
   - cd ..
 
 #environment:
