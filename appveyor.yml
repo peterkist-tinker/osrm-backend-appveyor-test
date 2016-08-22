@@ -65,7 +65,6 @@ before_build:
   # setup dependencies
   - ps: Invoke-WebRequest https://mapbox.s3.amazonaws.com/windows-builds/windows-build-deps/$env:DEPSPKG -OutFile $env:APPVEYOR_BUILD_FOLDER\$env:DEPSPKG
   - 7z -y x %DEPSPKG% | %windir%\system32\FIND "ing archive"
-  # setup build directory for cmake
   
 #after_build:
 
@@ -81,7 +80,7 @@ build_script:
      -DBoost_ADDITIONAL_VERSIONS=1.58 ^
      -DBoost_USE_MULTITHREADED=ON ^
      -DBoost_USE_STATIC_LIBS=ON ^
-     -DCMAKE_INSTALL_PREFIX=%PREFIX% ^
+     -DCMAKE_INSTALL_PREFIX=%PREFIX%
   - cd ..
 
 #environment:
